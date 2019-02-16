@@ -7,6 +7,15 @@
     "type": "git",
     "url": "https://github.com/alomardev/simpleng"
   },
+  "keywords": [
+    "angular",
+    "javascript",
+    "typescript",
+    "ngx",
+    "components",
+    "library"
+  ],
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": ">=4.0.0 <=^7.0.0",
     "@angular/core": ">=4.0.0 <=^7.0.0"
