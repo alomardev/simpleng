@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, InjectionToken, Inject, Optional, Output, EventEmitter } from '@angular/core';
-import { SNGPaginationConfig, SNGTablePage } from '../simpleng';
-import { SNGDefaultConfigs } from '../simpleng.common';
+import { SNGPaginationConfig, SNGTablePage, SNGDefaultConfigs } from '../simpleng.common';
 
 export const SNG_DEFAULT_PAGINATION_CONFIG = new InjectionToken<SNGPaginationConfig>('Default SimpleNG Pagination configuration');
 

@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { SNGPaginationConfig, SNGTablePage } from 'projects/simpleng/src/lib/simpleng';
+import { SNGPaginationConfig, SNGTablePage } from 'projects/simpleng/src/public_api';
 import { SNGTableData, SNG_DEFAULT_PAGINATION_CONFIG } from 'projects/simpleng/src/public_api';
 import { DummyService } from './dummy.service';
 

@@ -19,8 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { SNGPaginationComponent } from '../pagination/pagination.component';
-import { SNGPaginationConfig, SNGTableConfig, SNGTablePage } from '../simpleng';
-import { SNGDefaultConfigs, SNGTableData } from '../simpleng.common';
+import { SNGPaginationConfig, SNGTableConfig, SNGTablePage, SNGDefaultConfigs, SNGTableData } from '../simpleng.common';
 import { SNGTableColumnComponent } from './column/table-column.component';
 import { SNGTableHeaderOutletDirective } from './table-header-outlet.directive';
 
