@@ -1,0 +1,59 @@
+<div class="d-flex">
+  <!-- Pagination -->
+  <ul class="pagination">
+
+    <!-- First Page Button -->
+    <li class="page-item" [ngClass]="{'disabled': pageNumber == 1}">
+      <button class="page-link" (click)="setCurrentPageNumber(1)">
+        <span>&laquo;</span>
+      </button>
+    </li>
+
+    <!-- Prev Button -->
+    <li class="page-item" [ngClass]="{'disabled': pageNumber == 1}">
+      <button class="page-link" (click)="prevPage()">
+        <span>&lsaquo;</span>
+      </button>
+    </li>
+
+    <!-- Pages -->
+    <li *ngFor="let p of pages" class="page-item" [ngClass]="{ 'active': p == pageNumber }"><button class="page-link" (click)="setCurrentPageNumber(p)" [disabled]="p == pageNumber">{{ p }}</button></li>
+
+    <!-- Next Button -->
+    <li class="page-item" (click)="nextPage()" [ngClass]="{'disabled': pageNumber == totalPages}">
+      <button class="page-link">
+          &rsaquo;
+      </button>
+    </li>
+
+    <!-- Last Page Button -->
+    <li class="page-item" [ngClass]="{'disabled': pageNumber == totalPages}">
+      <button class="page-link" (click)="setCurrentPageNumber(totalPages)">
+          &raquo;
+      </button>
+    </li>
+  </ul>
+
+  <div class="mx-1"></div>
+
+  <!-- Total Record -->
+  <div>
+    <div class="form-control border-0" dir="ltr">
+      {{ startRow }}-{{ endRow }} / {{ totalRecords }}
+    </div>
+  </div>
+
+  <div class="mx-auto"></div>
+
+  <div class="mx-1"></div>
+
+  <!-- Page Size -->
+  <div class="form-control border-0 w-auto"
+        i18n="SimpleNG Pagination Component|Page Size label@@simpleng.pagination.label.pageSize">
+    Page Size
+  </div>
+  <select class="form-control w-auto minWidth" [(ngModel)]="pageSize" (change)="emitChanges()">
+    <option *ngFor="let s of config.pageSizes" [ngValue]="s">{{ s }}</option>
+  </select>
+  
+</div>

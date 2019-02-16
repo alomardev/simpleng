@@ -23,9 +23,13 @@
               "src/assets"
             ],
             "styles": [
+              "src/assets/bootstrap/bootstrap.min.css",
               "src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "src/assets/bootstrap/bootstrap.bundle.min.js"
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -124,6 +128,41 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "simpleng": {
+      "root": "projects/simpleng",
+      "sourceRoot": "projects/simpleng/src",
+      "projectType": "library",
+      "prefix": "sng",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/simpleng/tsconfig.lib.json",
+            "project": "projects/simpleng/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/simpleng/src/test.ts",
+            "tsConfig": "projects/simpleng/tsconfig.spec.json",
+            "karmaConfig": "projects/simpleng/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/simpleng/tsconfig.lib.json",
+              "projects/simpleng/tsconfig.spec.json"
+            ],
             "exclude": [
               "**/node_modules/**"
             ]

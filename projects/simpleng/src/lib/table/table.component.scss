@@ -1,0 +1,45 @@
+$icon-data-desc-light: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23333" transform="translate(-6, -6)" d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/></svg>';
+$icon-data-asc-light:  '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23333" transform="translate(-6, -6)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>';
+$icon-data-desc-dark:  '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23ddd" transform="translate(-6, -6)" d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/></svg>';
+$icon-data-asc-dark:   '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%23ddd" transform="translate(-6, -6)" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>';
+$icon-size: 0.75rem;
+$icon-padding: $icon-size / 2;
+$total-spacing: $icon-size + $icon-padding;
+.sng-table {
+  .sng-table-sort {
+    color: #000;
+    cursor: pointer;
+    > .sng-table-sort-spacing {
+      &::before {
+        content: '';
+        display: inline-block;
+      }
+    }
+    &.sng-table-sort-asc, &.sng-table-sort-desc {
+      & > .sng-table-sort-spacing::before {
+        width: $icon-size;
+        height: $icon-size;
+        html:not([dir=rtl]) & {
+          margin-right: $icon-padding;
+        }
+        html[dir=rtl] & {
+          margin-left: $icon-padding;
+        }
+      }
+    }
+    &.sng-table-sort-asc > .sng-table-sort-spacing::before {
+      background-image: url('data:image/svg+xml;utf8,#{$icon-data-asc-light}');
+    }
+    &.sng-table-sort-desc > .sng-table-sort-spacing::before {
+      background-image: url('data:image/svg+xml;utf8,#{$icon-data-desc-light}');
+    }
+  }
+  .thead-dark .sng-table-sort {
+    &.sng-table-sort-asc > .sng-table-sort-spacing::before {
+      background-image: url('data:image/svg+xml;utf8,#{$icon-data-asc-dark}');
+    }
+    &.sng-table-sort-desc > .sng-table-sort-spacing::before {
+      background-image: url('data:image/svg+xml;utf8,#{$icon-data-desc-dark}');
+    }
+  }
+}

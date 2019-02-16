@@ -17,6 +17,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "simpleng": [
+        "dist/simpleng"
+      ],
+      "simpleng/*": [
+        "dist/simpleng/*"
+      ]
+    }
   }
 }

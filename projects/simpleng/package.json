@@ -1,0 +1,14 @@
+{
+  "name": "simpleng",
+  "version": "0.1.0",
+  "description": "SimpleNG is Angular library that contains several simple and easy-to-use components",
+  "author": "Abdulrahman M. Alomar",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alomardev/simpleng"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=4.0.0 <=^7.0.0",
+    "@angular/core": ">=4.0.0 <=^7.0.0"
+  }
+}
