@@ -75,8 +75,3 @@ loadData(page: SNGTablePage) {
   });
 }
 ```
-
----
-
-[License]: LICENSE
-
