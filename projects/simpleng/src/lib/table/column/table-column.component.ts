@@ -1,4 +1,4 @@
-import { Component, ContentChild, TemplateRef, AfterViewInit, Input } from '@angular/core';
+import { Component, ContentChild, TemplateRef, Input } from '@angular/core';
 import { SNGTableHeaderDirective } from './table-header.directive';
 import { SNGTableRowDirective } from './table-row.directive';
 

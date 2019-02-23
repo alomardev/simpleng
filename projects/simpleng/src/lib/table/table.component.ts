@@ -7,7 +7,6 @@ import {
   Inject,
   InjectionToken,
   Input,
-  OnInit,
   Optional,
   Output,
   QueryList,

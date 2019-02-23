@@ -29,9 +29,9 @@ export class SNGPaginationComponent implements OnInit {
   totalPages: number;
   pages: number[] = [];
 
+  _oneBasedPageNumber: number;
   private _totalRecords: number;
   private _pageNumber: number;
-  private _oneBasedPageNumber: number;
   private _pageSize: number;
 
   @Input('totalRecords')
