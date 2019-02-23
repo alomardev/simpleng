@@ -1,7 +1,6 @@
 <div class="container">
   <div class="card border-0 mt-3 p-3">
-    <!-- <usage-example></usage-example> -->
-    <sng-table [tableData]="tableData" [hidePagination]="true" (pageChange)="loadData($event)">
+    <sng-table [tableData]="tableData" (pageChange)="loadData($event)">
       <sng-table-column>
         <th *sngTableHeader>ID</th>
         <td *sngTableRow="let row">{{ row.id }}</td>

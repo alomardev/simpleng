@@ -31,6 +31,7 @@ export class SNGPaginationComponent implements OnInit {
 
   private _totalRecords: number;
   private _pageNumber: number;
+  private _oneBasedPageNumber: number;
   private _pageSize: number;
 
   @Input('totalRecords')
@@ -57,6 +58,7 @@ export class SNGPaginationComponent implements OnInit {
   @Input('pageNumber')
   set pageNumber(value: number) {
     this._pageNumber = value;
+    this._oneBasedPageNumber = this.config.zeroBased ? value + 1 : value;
     this.calculate();
   }
 
@@ -64,20 +66,24 @@ export class SNGPaginationComponent implements OnInit {
     return this._pageNumber;
   }
 
+  get page() {
+    return {
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize
+    };
+  }
+
   constructor(@Optional() @Inject(SNG_DEFAULT_PAGINATION_CONFIG) private injectedConfig: SNGPaginationConfig) {
     this.config = injectedConfig;
   }
 
   ngOnInit() {
-    this.pageNumber = 1;
+    this.pageNumber = this.config.zeroBased ? 0 : 1;
     this.pageSize = this.config.defaultPageSize;
   }
 
   emitChanges() {
-    this.pageChange.emit({
-      pageNumber: this.pageNumber,
-      pageSize: this.pageSize,
-    });
+    this.pageChange.emit({...this.page});
   }
 
   setCurrentPage(pageNumber: number, pageSize: number) {
@@ -87,13 +93,14 @@ export class SNGPaginationComponent implements OnInit {
   }
 
   setCurrentPageNumber(pageNumber: number, emit: boolean = true) {
-    if (pageNumber > this.totalPages) {
-      pageNumber = this.totalPages;
+    let oneBased = this.config.zeroBased ? pageNumber + 1 : pageNumber;
+    if (oneBased > this.totalPages) {
+      oneBased = this.totalPages;
     }
-    if (pageNumber < 1) {
-      pageNumber = 1;
+    if (oneBased < 1) {
+      oneBased = 1;
     }
-    this.pageNumber = pageNumber;
+    this.pageNumber = this.config.zeroBased ? oneBased - 1 : oneBased;
     if (emit) {
       this.emitChanges();
     }
@@ -110,6 +117,14 @@ export class SNGPaginationComponent implements OnInit {
     }
   }
 
+  firstPage() {
+    this.setCurrentPageNumber(this.config.zeroBased ? 0 : 1);
+  }
+
+  lastPage() {
+    this.setCurrentPageNumber(this.config.zeroBased ? this.totalPages - 1 : this.totalPages);
+  }
+
   nextPage() {
     this.setCurrentPageNumber(this.pageNumber + 1);
   }
@@ -121,14 +136,14 @@ export class SNGPaginationComponent implements OnInit {
   private calculate() {
     if (!this.config) { return; }
 
-    this.startRow = this.pageSize * (this.pageNumber - 1) + 1;
-    this.endRow = this.pageSize * this.pageNumber;
+    this.startRow = this.pageSize * (this._oneBasedPageNumber - 1) + 1;
+    this.endRow = this.pageSize * this._oneBasedPageNumber;
     if (this.endRow > this.totalRecords) { this.endRow = this.totalRecords; }
     this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
 
     this.pages = [];
 
-    let start = this.pageNumber - Math.floor(this.config.visiblePages / 2);
+    let start = this._oneBasedPageNumber - Math.floor(this.config.visiblePages / 2);
     if (start + this.config.visiblePages - 1 > this.totalPages) {
       start = this.totalPages - this.config.visiblePages + 1;
     }

@@ -16,6 +16,7 @@ export interface SNGTableConfig {
 }
 
 export interface SNGPaginationConfig {
+  zeroBased?: boolean;
   pageSizes?: number[];
   visiblePages?: number;
   defaultPageSize?: number;
@@ -34,6 +35,7 @@ export const SNGDefaultConfigs: SNGConfigs = {
     },
   },
   pagination: {
+    zeroBased: true,
     pageSizes: [10, 50, 100, 200],
     visiblePages: 5,
     defaultPageSize: 50

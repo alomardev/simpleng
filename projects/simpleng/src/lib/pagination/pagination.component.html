@@ -3,32 +3,32 @@
   <ul class="pagination">
 
     <!-- First Page Button -->
-    <li class="page-item" [ngClass]="{'disabled': pageNumber == 1}">
-      <button class="page-link" (click)="setCurrentPageNumber(1)">
+    <li class="page-item" [ngClass]="{'disabled': _oneBasedPageNumber == 1}">
+      <button class="page-link" (click)="firstPage()">
         <span>&laquo;</span>
       </button>
     </li>
 
     <!-- Prev Button -->
-    <li class="page-item" [ngClass]="{'disabled': pageNumber == 1}">
+    <li class="page-item" [ngClass]="{'disabled': _oneBasedPageNumber == 1}">
       <button class="page-link" (click)="prevPage()">
         <span>&lsaquo;</span>
       </button>
     </li>
 
     <!-- Pages -->
-    <li *ngFor="let p of pages" class="page-item" [ngClass]="{ 'active': p == pageNumber }"><button class="page-link" (click)="setCurrentPageNumber(p)" [disabled]="p == pageNumber">{{ p }}</button></li>
+    <li *ngFor="let p of pages" class="page-item" [ngClass]="{ 'active': p == _oneBasedPageNumber }"><button class="page-link" (click)="setCurrentPageNumber(config.zeroBased ? p - 1 : p)" [disabled]="p == _oneBasedPageNumber">{{ p }}</button></li>
 
     <!-- Next Button -->
-    <li class="page-item" (click)="nextPage()" [ngClass]="{'disabled': pageNumber == totalPages}">
+    <li class="page-item" (click)="nextPage()" [ngClass]="{'disabled': _oneBasedPageNumber == totalPages}">
       <button class="page-link">
           &rsaquo;
       </button>
     </li>
 
     <!-- Last Page Button -->
-    <li class="page-item" [ngClass]="{'disabled': pageNumber == totalPages}">
-      <button class="page-link" (click)="setCurrentPageNumber(totalPages)">
+    <li class="page-item" [ngClass]="{'disabled': _oneBasedPageNumber == totalPages}">
+      <button class="page-link" (click)="lastPage()">
           &raquo;
       </button>
     </li>
@@ -49,7 +49,7 @@
 
   <!-- Page Size -->
   <div class="form-control border-0 w-auto"
-        i18n="SimpleNG Pagination Component|Page Size label@@simpleng.pagination.label.pageSize">
+       i18n="SimpleNG Pagination Component - Page Size label@@simpleng.pagination.label.pageSize">
     Page Size
   </div>
   <select class="form-control w-auto minWidth" [(ngModel)]="pageSize" (change)="emitChanges()">

@@ -7,13 +7,11 @@ import {
   Inject,
   InjectionToken,
   Input,
-  OnChanges,
   OnInit,
   Optional,
   Output,
   QueryList,
   Renderer2,
-  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -31,7 +29,7 @@ export const SNG_DEFAULT_TABLE_CONFIG = new InjectionToken<SNGTableConfig>('Defa
   styleUrls: ['./table.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class SNGTableComponent implements OnInit, AfterViewInit, OnChanges {
+export class SNGTableComponent implements AfterViewInit {
 
   private readonly cssClass = {
     sort: 'sng-table-sort',
@@ -85,7 +83,10 @@ export class SNGTableComponent implements OnInit, AfterViewInit, OnChanges {
     };
   }
 
-  page: SNGTablePage;
+  page: SNGTablePage = {
+    pageNumber: 0,
+    pageSize: 0
+  };
 
   private currentSortElement: any;
 
@@ -93,31 +94,15 @@ export class SNGTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.config = injectedConfig;
   }
 
-  ngOnInit() {
-    this.page = {
-      pageNumber: 1,
-      pageSize: this.paginationComponent.config.defaultPageSize
-    };
-    this.fetchData();
-    this.emitChanges(); // Default emission.
-  }
-
   ngAfterViewInit() {
     this.renderHeaders();
     this.columnsList.changes.subscribe((list: QueryList<SNGTableColumnComponent>) => {
       this.renderHeaders(list);
     });
+    this.emitChanges(); // Default emission.
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('data')) {
-      this.fetchData();
-    }
-  }
-
-  paginationChange(page: SNGTablePage) {
-    this.page.pageNumber = page.pageNumber;
-    this.page.pageSize = page.pageSize;
+  paginationChange() {
     this.emitChanges();
   }
 
@@ -156,12 +141,8 @@ export class SNGTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.emitChanges();
   }
 
-  private fetchData() {
-    // TODO: Support client side pagination
-  }
-
   private emitChanges() {
-    this.pageChange.emit(this.page);
+    this.pageChange.emit({...this.page, ...this.paginationComponent.page});
   }
 
   private renderHeaders(list: QueryList<SNGTableColumnComponent> = this.columnsList) {

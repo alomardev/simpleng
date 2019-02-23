@@ -1,6 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { SNGPaginationConfig, SNGTablePage } from 'projects/simpleng/src/public_api';
-import { SNGTableData, SNG_DEFAULT_PAGINATION_CONFIG } from 'projects/simpleng/src/public_api';
+import { Component } from '@angular/core';
+import { SNGTablePage, SNGTableData } from 'projects/simpleng/src/public_api';
 import { DummyService } from './dummy.service';
 
 @Component({
@@ -12,18 +11,14 @@ export class AppComponent {
 
   tableData: SNGTableData<any> = new SNGTableData();
 
-  constructor(private dummyService: DummyService,
-              @Inject(SNG_DEFAULT_PAGINATION_CONFIG)
-              private paginationConfig: SNGPaginationConfig) {
-    this.loadData();
-  }
+  constructor(private dummyService: DummyService) {}
 
   loadData(page?: SNGTablePage) {
-    this.dummyService.getPagedDummy(
-      !page ? 1 : page.pageNumber,
-      !page ? this.paginationConfig.defaultPageSize : page.pageSize,
-      !page ? null : page.sortProp,
-      !page ? null : page.sortDirection
+    this.dummyService.getPagedDummyData(
+      page.pageNumber,
+      page.pageSize,
+      page.sortProp,
+      page.sortDirection
     ).subscribe(data => {
       this.tableData.updateFromJpaPage(data);
     });

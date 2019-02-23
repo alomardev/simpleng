@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
         }
       },
       pagination: {
+        zeroBased: true,
         pageSizes: [1, 10, 20, 50, 100],
         defaultPageSize: 10,
         visiblePages: 3
