@@ -1,42 +1,64 @@
 # SimpleNG Library
 
-SimpleNG is Angular library that contains several simple components. The aim is to provide simple, easy-to-use components that solve daily development problems.
+[![npm version](https://badge.fury.io/js/simpleng.svg)](https://www.npmjs.com/package/simpleng)
 
-Bootstrap css classes are used in the UI; however, the customization is possible by using component-specific css classes.
+SimpleNG is Angular library that contains simple and easy-to-use components. Bootstrap css classes are used in the UI; however, the customization is possible by using component-specific css classes.
 
 ### Available Components
 
 - Table
 - Pagination
 
+### Dependencies
+
+Angular 5+
+
+### Install
+
+```
+npm install simpleng --save
+```
+
 ### Setup
 
-1. Install via `npm`
+```typescript
+import { SimpleNGModule } from 'simpleng';
 
-   ```
-   npm install simpleng
-   ```
+@NgModule({
+  ...
+  imports: [
+    ...
+    SimpleNGModule,
+  ],
+})
+export class AppModule {}
+```
 
-2. Import the module
+Global configurations can be provided by importing `SimpleNGModule.configure({...})`
 
-   ```js
-   import { SimpleNGModule } from 'simpleng';
-   
-   @NgModule({
-     ...
-     imports: [
-       ...
-       SimpleNGModule,
-     ],
-   })
-   export class AppModule {}
-   ```
+```typescript
+import { SimpleNGModule } from 'simpleng';
+
+@NgModule({
+  ...
+  imports: [
+    ...
+    SimpleNGModule.configure({
+      table: {...},
+      pagination: {...}
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+
 
 ## Table
 
-SNGTable provides a simple component to render html table sorting and pagination UI.
+SNGTable is a component that renders html table, with sorting and pagination user interface. Data should be passed manually instead of slicing and sorting them internally.
 
-### Basic Usage
+### Usage
 
 ```html
 <sng-table [tableData]="tableData" (pageChange)="loadData($event)">
@@ -76,7 +98,37 @@ loadData(page: SNGTablePage) {
 }
 ```
 
----
+SNGTableData instance should be updated when after fetching new data. If the response is coming as JPA `Page` object, It will be updated just by calling `SNGTableData.updateFromJpaPage(page)`; call `SNGTableData.update(data: T[], pageNumber?: number, pageSize?: number, totalRecords?: number)` otherwise.
 
-[License]: LICENSE
+### Configurations
+
+SNGTable component can be configured specifically by passing `[config]` for table configuration, and `[pagination]` for pagination configuration.
+
+```html
+<sng-table [config]="{...}" [pagination]="{...}">
+  ...
+</sng-table>
+```
+
+#### Table Configuration
+
+| Option            | Type    | Default | Description                                                  |
+| ----------------- | ------- | ------- | ------------------------------------------------------------ |
+| responsive        | boolean | true    | Make the table responsive by adding `responsive` bootstrap class to the component |
+| style             | object  | ↓       | Object containing several options to style the table         |
+| style.tableStyle  | string  | default | Table style which accepts one of the following values: `default`, `bordered`, `borderless` |
+| style.tableTheme  | string  | default | Table background color which accepts the following values: `default`, `dark`, `light` |
+| style.headerTheme | string  | default | Table header background color which accepts the following values: `default`, `dark`, `light` |
+| style.small       | boolean | false   | `true` makes the table compact                               |
+| style.striped     | boolean | false   | Striped table rows                                           |
+| style.hover       | boolean | false   | Highlight a row when hovering                                |
+
+#### Pagination Configuration
+
+| Option          | Type     | Default            | Description                                                  |
+| :-------------- | -------- | ------------------ | ------------------------------------------------------------ |
+| zeroBased       | boolean  | true               | Page data will start from zero                               |
+| pageSizes       | string[] | [10, 50, 100, 200] | Page size options to allow users picking one of them         |
+| visiblePages    | number   | 5                  | Maximum number of pagination buttons that appears to the user |
+| defaultPageSize | number   | 50                 | Default page size                                            |
 

@@ -1,8 +1,8 @@
 import { Directive, TemplateRef } from '@angular/core';
 
 @Directive({
-    selector: '[sngTableRow]'
+  selector: '[sngTableRow]'
 })
 export class SNGTableRowDirective {
-    constructor(public templateRef: TemplateRef<any>) {}
+  constructor(public templateRef: TemplateRef<any>) {}
 }

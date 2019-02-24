@@ -13,4 +13,5 @@ export class SNGTableColumnComponent {
   @ContentChild(SNGTableRowDirective, {read: TemplateRef}) rowTemplate: TemplateRef<any>;
 
   constructor() {}
+
 }
