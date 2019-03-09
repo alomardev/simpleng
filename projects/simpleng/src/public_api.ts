@@ -9,4 +9,8 @@ export * from './lib/table/table.component';
 export * from './lib/table/column/table-column.component';
 export * from './lib/table/column/table-header.directive';
 export * from './lib/table/column/table-row.directive';
+
 export * from './lib/pagination/pagination.component';
+
+export * from './lib/alert/alert.component';
+export * from './lib/alert/alert.service';

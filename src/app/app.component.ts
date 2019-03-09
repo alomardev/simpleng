@@ -20,7 +20,7 @@ export class AppComponent {
       page.sortProp,
       page.sortDirection
     ).subscribe(data => {
-      this.tableData.updateFromJpaPage(data);
+      this.tableData.updateFromPage(data);
     });
   }
 

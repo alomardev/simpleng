@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Page } from './models/jpa-page';
+import { PageResult } from 'projects/simpleng/src/public_api';
 
 @Injectable({providedIn: 'root'})
 export class DummyService {
@@ -11,7 +11,7 @@ export class DummyService {
 
   constructor(private http: HttpClient) {}
 
-  getPagedDummyData(pageNumber: number, pageSize: number, sortProp: string, sortDirection: SortDirection): Observable<Page<any[]>> {
+  getPagedDummyData(pageNumber: number, pageSize: number, sortProp: string, sortDirection: SortDirection): Observable<PageResult<any[]>> {
     return this.http.get<any[]>(this.dummyUrl).pipe(
       map((data: any[]) => {
         if (sortProp) {
@@ -31,7 +31,7 @@ export class DummyService {
         const len = data.length;
         const start = pageSize * pageNumber;
         const slice = data.splice(start, pageSize);
-        const page: Page<any> = {
+        const page: PageResult<any> = {
           content: slice,
           number: pageNumber,
           size: pageSize,

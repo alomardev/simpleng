@@ -1,6 +1,7 @@
 export interface SNGConfigs {
   table?: SNGTableConfig;
   pagination?: SNGPaginationConfig;
+  alert?: SNGAlertConfig;
 }
 
 export interface SNGTableConfig {
@@ -22,6 +23,11 @@ export interface SNGPaginationConfig {
   defaultPageSize?: number;
 }
 
+export interface SNGAlertConfig {
+  dismissable?: boolean;
+  animation?: boolean;
+}
+
 export const SNGDefaultConfigs: SNGConfigs = {
   table: {
     responsive: true,
@@ -39,6 +45,10 @@ export const SNGDefaultConfigs: SNGConfigs = {
     pageSizes: [10, 50, 100, 200],
     visiblePages: 5,
     defaultPageSize: 50
+  },
+  alert: {
+    dismissable: true,
+    animation: true,
   }
 };
 
@@ -49,22 +59,42 @@ export interface SNGTablePage {
   sortDirection?: 'ASC' | 'DESC';
 }
 
+export interface PageResult<T> {
+  number: number;
+  size: number;
+  content: T[];
+  totalElements: number;
+}
+
 export class SNGTableData<T> {
 
   data: T[];
   pageNumber: number;
   pageSize: number;
-  totalRecords: number;
+  totalElements: number;
 
-  updateFromJpaPage(data: any) {
-    this.update(data.content, data.number, data.size, data.totalElements);
+  updateFromPage(page: PageResult<T>) {
+    this.update(page.content, page.number, page.size, page.totalElements);
   }
 
-  update(data: T[], pageNumber?: number, pageSize?: number, totalRecords?: number) {
+  update(data: T[], pageNumber?: number, pageSize?: number, totalElements?: number) {
     this.data = data;
     this.pageNumber = pageNumber || this.pageNumber;
     this.pageSize = pageSize || this.pageSize;
-    this.totalRecords = totalRecords || this.totalRecords;
+    this.totalElements = totalElements || this.totalElements;
   }
 
+}
+
+// Alert
+
+export type SNGAlertType = 'success' | 'warning' | 'error' | 'info';
+
+export type SNGAlertMessage = string | {key: string, [key: string]: string};
+
+export interface SNGAlertValue {
+  message: SNGAlertMessage;
+  type: SNGAlertType;
+  context?: string;
+  timeout?: number;
 }

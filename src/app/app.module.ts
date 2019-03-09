@@ -4,10 +4,12 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { SimpleNGModule } from 'projects/simpleng/src/public_api';
 import { HttpClientModule } from '@angular/common/http';
+import { AlertDemoComponent } from './alert-demo/alert-demo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AlertDemoComponent,
   ],
   imports: [
     HttpClientModule,

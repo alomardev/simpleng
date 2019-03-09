@@ -1,5 +1,10 @@
 <div class="container">
   <div class="card border-0 mt-3 p-3">
+
+    <app-alert-demo></app-alert-demo>
+
+    <hr>
+
     <sng-table [tableData]="tableData" (pageChange)="loadData($event)">
       <sng-table-column>
         <th *sngTableHeader>ID</th>
