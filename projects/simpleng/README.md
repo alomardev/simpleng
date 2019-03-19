@@ -7,7 +7,7 @@ SimpleNG is Angular library that contains simple and easy-to-use components. Boo
 ### Available Components
 
 - Table
-- Pagination
+- Alert
 
 ### Dependencies
 
@@ -45,7 +45,8 @@ import { SimpleNGModule } from 'simpleng';
     ...
     SimpleNGModule.configure({
       table: {...},
-      pagination: {...}
+      pagination: {...},
+      alert: {...}
     }),
   ],
 })
@@ -61,7 +62,7 @@ SNGTable is a component that renders html table, with sorting and pagination use
 ### Usage
 
 ```html
-<sng-table [tableData]="tableData" (pageChange)="loadData($event)">
+<sng-table (pageChange)="loadData($event)">
   <sng-table-column>
     <th *sngTableHeader>ID</th>
     <td *sngTableRow="let row">{{ row.id }}</td>
@@ -77,40 +78,62 @@ SNGTable is a component that renders html table, with sorting and pagination use
 </sng-table>
 ```
 
-Initialize a TableData instance
-
 ```typescript
-tableData: SNGTableData<any> = new SNGTableData();
-```
-
-Listen to the page changes. It will be called initially for the first page and the default page size with no sorting
-
-```typescript
+@ViewChild(SNGTableComponent) table: SNGTableComponent<any>;
+...
 loadData(page: SNGTablePage) {
   this.dummyService.getPagedDummyData(
     page.pageNumber,
     page.pageSize,
     page.sortProp,
     page.sortDirection
-  ).subscribe(data => {
-    this.tableData.updateFromJpaPage(data);
+  ).subscribe(pageResponse => {
+    this.table.updateByPageResponse(pageResponse);
   });
 }
 ```
 
-SNGTableData instance should be updated when after fetching new data. If the response is coming as JPA `Page` object, It will be updated just by calling `SNGTableData.updateFromJpaPage(page)`; call `SNGTableData.update(data: T[], pageNumber?: number, pageSize?: number, totalRecords?: number)` otherwise.
+SNGTableComponent instance should be updated after fetching new data. If the response comes as `PageResponse` object. Table properties can be updated by calling `SNGTableComponent.update(data: T[], pageNumber?: number, pageSize?: number, totalRecords?: number)`. If the response comes as `PageResponse` object, a shorthand method can be used instead `SNGTableComponent.updateByPageResponse(page)`.
 
-### Configurations
+`SNGTableComponent.page` contains current page properties. Note that Initial table page object is available in the lifecycle hook `ngAfterViewInit()`. 
 
-SNGTable component can be configured specifically by passing `[config]` for table configuration, and `[pagination]` for pagination configuration.
+[More]: https://angular.io/guide/lifecycle-hooks
+
+
+
+```typescript
+import { AfterViewInit } from '@angular/core';
+...
+export class AppComponent implements AfterViewInit {
+    @ViewChild(SNGTableComponent) table: SNGTableComponent<any>;
+	...
+    ngAfterViewInit() {
+        this.loadData(this.table.page); // Initial load
+    }
+}
+```
+
+### Pagination
+
+Table components will render the pagination by default. It can be disabled by setting `pagination="none"` attribute to the component.
 
 ```html
-<sng-table [config]="{...}" [pagination]="{...}">
+<sng-table pagination="none">
   ...
 </sng-table>
 ```
 
-#### Table Configuration
+### Configurations
+
+SNGTable component can be configured individually by passing `[config]` for table configuration, and `[paginationConfig]` for pagination configuration.
+
+```html
+<sng-table [config]="{...}" [paginationConfig]="{...}">
+  ...
+</sng-table>
+```
+
+#### Table Options
 
 | Option            | Type    | Default | Description                                                  |
 | ----------------- | ------- | ------- | ------------------------------------------------------------ |
@@ -123,7 +146,7 @@ SNGTable component can be configured specifically by passing `[config]` for tabl
 | style.striped     | boolean | false   | Striped table rows                                           |
 | style.hover       | boolean | false   | Highlight a row when hovering                                |
 
-#### Pagination Configuration
+#### Pagination Options
 
 | Option          | Type     | Default            | Description                                                  |
 | :-------------- | -------- | ------------------ | ------------------------------------------------------------ |
@@ -131,4 +154,59 @@ SNGTable component can be configured specifically by passing `[config]` for tabl
 | pageSizes       | string[] | [10, 50, 100, 200] | Page size options to allow users picking one of them         |
 | visiblePages    | number   | 5                  | Maximum number of pagination buttons that appears to the user |
 | defaultPageSize | number   | 50                 | Default page size                                            |
+
+
+
+## Alert
+
+SNGAlert makes it easy to show bootstrap alerts with different level using `SNGAlertService`.
+
+### Usage
+
+```html
+<sng-alert context="general"></sng-alert>
+```
+
+```typescript
+// Injecting SNGAlertService
+constructor(private alertService: SNGAlertService) { }
+...
+showMessage() {
+    // Display success message in 'general' alert
+    this.alertService.success('Success message', 'general');
+    // Adding visibility timeout to the alert in millis
+    this.alertService.warning('Warning message', 'general', 1000);
+}
+...
+clearMessage() {
+    this.alertService.clear('general');
+}
+```
+
+`context` is optional. If not provided, the alert service will notify the components with no context. Available levels are `success`, `warning`, `error`, `info`.
+
+Alerts can be sticky, remains at the top of the viewport, if `sticky` flag is set to `true`. Also, more than one alert message can appear at the same time in the same SNGAlertComponent instance by setting `multi` to `true`.
+
+```html
+<sng-alert [sticky]="true" [multi]="true"></sng-alert>
+```
+
+
+
+### Configurations
+
+SNGAlert component can be configured individually by passing `[config]` for alert configuration.
+
+```html
+<sng-alert [config]="{...}"></sng-alert>
+```
+
+#### Options
+
+| Option             | Type    | Default | Description                                          |
+| ------------------ | ------- | ------- | ---------------------------------------------------- |
+| dismissable        | boolean | true    | Adds dismiss button on each alert                    |
+| animation          | boolean | true    | Enables show/hide animation                          |
+| style              | object  | ↓       | Object containing several options to style the table |
+| style.stickyShadow | boolean | true    | Activates the shadow when alerts sticks at the top   |
 

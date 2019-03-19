@@ -13,7 +13,8 @@ import {
   ElementRef,
   AfterViewInit,
   InjectionToken,
-  Optional
+  Optional,
+  HostBinding
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SNGAlertValue, SNGAlertConfig, SNGDefaultConfigs } from '../simpleng.common';
@@ -26,10 +27,10 @@ export const SNG_DEFAULT_ALERT_CONFIG = new InjectionToken<SNGAlertConfig>('Defa
   selector: 'sng-alert',
   templateUrl: './alert.component.html',
   styleUrls: ['./alert.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated,
+  encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('showHide', [
-      transition(':leave', [
+      transition(':leave, visible => invisible', [
         animate('300ms ease-out', style({
           opacity: 0,
           height: 0,
@@ -39,7 +40,7 @@ export const SNG_DEFAULT_ALERT_CONFIG = new InjectionToken<SNGAlertConfig>('Defa
           marginBottom: 0
         })),
       ]),
-      transition(':enter', [
+      transition(':enter, invisible => visible', [
         style({
           height: 0,
           paddingTop: 0,
@@ -61,11 +62,13 @@ export const SNG_DEFAULT_ALERT_CONFIG = new InjectionToken<SNGAlertConfig>('Defa
 })
 export class SNGAlertComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  _config: SNGAlertConfig;
+  @HostBinding('class.sng-alert') sngAlertClass = true;
+
+  private _config: SNGAlertConfig;
   @Input('config')
   set config(val: SNGAlertConfig) {
     this._config = {
-      ...SNGDefaultConfigs.table,
+      ...SNGDefaultConfigs.alert,
       ...this.injectedConfig,
       ...val
     };
@@ -137,6 +140,9 @@ export class SNGAlertComponent implements OnInit, AfterViewInit, OnDestroy {
   clear(message?: SNGAlertValue) {
     if (message) {
       const index = this.messages.indexOf(message);
+      if (index === -1) {
+        return;
+      }
       this.messages.splice(index, 1);
       this.inlineContainer.remove(index);
       if (this.cloneContainer) {

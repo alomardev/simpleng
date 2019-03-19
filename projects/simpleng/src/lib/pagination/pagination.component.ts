@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, InjectionToken, Inject, Optional, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, InjectionToken, Inject, Optional, Output, EventEmitter, ViewEncapsulation, HostBinding } from '@angular/core';
 import { SNGPaginationConfig, SNGTablePage, SNGDefaultConfigs } from '../simpleng.common';
 
 export const SNG_DEFAULT_PAGINATION_CONFIG = new InjectionToken<SNGPaginationConfig>('Default SimpleNG Pagination configuration');
@@ -6,13 +6,16 @@ export const SNG_DEFAULT_PAGINATION_CONFIG = new InjectionToken<SNGPaginationCon
 @Component({
   selector: 'sng-pagination',
   templateUrl: './pagination.component.html',
+  encapsulation: ViewEncapsulation.None
 })
 export class SNGPaginationComponent implements OnInit {
+
+  @HostBinding('class.sng-pagination') sngPaginationClass = true;
 
   @Output() pageChange: EventEmitter<SNGTablePage> = new EventEmitter();
 
   private _config: SNGPaginationConfig;
-  @Input('config')
+  @Input()
   set config(val: SNGPaginationConfig) {
     this._config = {
       ...SNGDefaultConfigs.pagination,

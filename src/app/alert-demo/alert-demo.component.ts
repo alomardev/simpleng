@@ -13,7 +13,7 @@ export class AlertDemoComponent implements OnInit {
   }
 
   showMessage(type: SNGAlertType) {
-    this.alertService[type](`Hello! This is a (${type})`, null, 5000);
+    this.alertService[type](`Hello! This is a (${type})`);
   }
 
   clear() {

@@ -2,12 +2,18 @@
 <ng-template #emptyHeaderTemplate><th></th></ng-template>
 <div [ngClass]="{'table-responsive': config.responsive}">
   <table class="table" [ngClass]="tableStyle">
-    <thead [ngClass]="headerStyle">
+    <thead [ngClass]="headerStyle" [hidden]="tableData.data?.length === 0">
       <tr>
         <ng-container sngTableHeaderOutlet></ng-container>
       </tr>
     </thead>
     <tbody>
+      <tr *ngIf="tableData.data?.length === 0">
+        <td class="text-center" [attr.colspan]="this.columnsList.length">
+          <span *ngIf="!emptyMessage" i18n="SimpleNG Table Component - Empty table message@@simpleng.table.emptyTableMessage">No records</span>
+          <span *ngIf="emptyMessage">{{ emptyMessage }}</span>
+        </td>
+      </tr>
       <tr *ngFor="let row of tableData.data">
         <ng-container *ngFor="let c of columnsList">
           <ng-container *ngIf="c.rowTemplate; then contentCell; else emptyCell"></ng-container>
@@ -22,10 +28,10 @@
     </tbody>
   </table>
 </div>
-<sng-pagination [hidden]="hidePagination"
-  [config]="pagination"
-  [totalRecords]="tableData.totalRecords"
+<sng-pagination [hidden]="hidePagination || pagination === 'none'"
+  [config]="paginationConfig"
+  [totalRecords]="tableData.totalElements"
   [pageSize]="tableData.pageSize"
   [pageNumber]="tableData.pageNumber"
-  (pageChange)="paginationChange()">
+  (pageChange)="paginationChange($event)">
 </sng-pagination>

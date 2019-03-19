@@ -5,7 +5,7 @@
 
     <hr>
 
-    <sng-table [tableData]="tableData" (pageChange)="loadData($event)">
+    <sng-table (pageChange)="loadData($event)" [paginationConfig]="{defaultPageSize: 1}">
       <sng-table-column>
         <th *sngTableHeader>ID</th>
         <td *sngTableRow="let row">{{ row.id }}</td>

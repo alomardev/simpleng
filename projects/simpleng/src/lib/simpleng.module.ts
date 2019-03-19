@@ -51,7 +51,7 @@ export class SimpleNGModule {
       providers: [
         {provide: SNG_DEFAULT_TABLE_CONFIG, useValue: configs.table},
         {provide: SNG_DEFAULT_PAGINATION_CONFIG, useValue: configs.pagination},
-        {provide: SNG_DEFAULT_PAGINATION_CONFIG, useValue: configs.alert},
+        {provide: SNG_DEFAULT_ALERT_CONFIG, useValue: configs.alert},
       ]
     };
   }

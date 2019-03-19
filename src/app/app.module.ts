@@ -19,14 +19,14 @@ import { AlertDemoComponent } from './alert-demo/alert-demo.component';
         responsive: true,
         style: {
           headerTheme: 'default',
-          tableStyle: 'bordered',
-          striped: true
+          tableStyle: 'borderless',
+          striped: false
         }
       },
       pagination: {
         zeroBased: true,
         pageSizes: [1, 10, 20, 50, 100],
-        defaultPageSize: 10,
+        defaultPageSize: 20,
         visiblePages: 3
       }
     }),

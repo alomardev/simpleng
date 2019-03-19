@@ -1,5 +1,5 @@
 <ng-template #template let-m>
-  <div @showHide class="alert alert-{{ m.type === 'error' ? 'danger' : m.type }}">
+  <div @showHide class="alert alert-{{ m.type === 'error' ? 'danger' : m.type }}" [ngClass]="{'stickyShadow': config.style.stickyShadow}">
     {{ m.message }}
     <button *ngIf="config.dismissable" class="close" (click)="clear(m)">&times;</button>
   </div>
@@ -8,7 +8,6 @@
   <ng-container #inline></ng-container>
 </div>
 <ng-template [ngIf]="sticky">
-  <div class="sticky overlay-shadow" @showHide [hidden]="!sticked" *ngIf="messages.length > 0" [ngStyle]="{'width': cloneWidth}"></div>
   <div class="sticky" #sticky [hidden]="!sticked" [ngStyle]="{'width': cloneWidth}">
     <ng-container #clone></ng-container>
   </div>

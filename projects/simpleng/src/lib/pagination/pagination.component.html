@@ -38,7 +38,7 @@
 
   <!-- Total Record -->
   <div>
-    <div class="form-control border-0" dir="ltr">
+    <div class="form-control border-0 bg-transparent" dir="ltr">
       {{ startRow }}-{{ endRow }} / {{ totalRecords }}
     </div>
   </div>
@@ -48,12 +48,12 @@
   <div class="mx-1"></div>
 
   <!-- Page Size -->
-  <div class="form-control border-0 w-auto"
+  <div class="form-control border-0 w-auto bg-transparent"
        i18n="SimpleNG Pagination Component - Page Size label@@simpleng.pagination.label.pageSize">
     Page Size
   </div>
   <select class="form-control w-auto minWidth" [(ngModel)]="pageSize" (change)="emitChanges()">
     <option *ngFor="let s of config.pageSizes" [ngValue]="s">{{ s }}</option>
   </select>
-  
+
 </div>

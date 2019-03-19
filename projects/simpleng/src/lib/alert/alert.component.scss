@@ -1,18 +1,19 @@
 $margin: 10px;
-$overlay-shadow-height: 10px;
-.sticky {
-  position: fixed;
-  top: 0;
-  margin-top: $margin;
-  .alert:last-child {
-    margin-bottom: 0 !important;
+.sng-alert {
+  .sticky {
+    position: fixed;
+    top: 0;
+    margin-top: $margin;
+    .alert {
+      &:last-child {
+        margin-bottom: 0 !important;
+      }
+      &.stickyShadow {
+        box-shadow: 0 4px 40px 4px rgba(0, 0, 0, 0.45);
+      }
+    }
   }
-}
-.overlay-shadow {
-  height: $overlay-shadow-height;
-  transform: translateY(-($margin+$overlay-shadow-height));
-  box-shadow: 0 ($margin+$overlay-shadow-height) 100px 40px rgba(0, 0, 0, 0.3);
-}
-.alert {
-  overflow: hidden;
+  .alert {
+    overflow: hidden;
+  }
 }

@@ -13,10 +13,11 @@ import {
   Renderer2,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  OnInit,
 } from '@angular/core';
 import { SNGPaginationComponent } from '../pagination/pagination.component';
-import { SNGPaginationConfig, SNGTableConfig, SNGTablePage, SNGDefaultConfigs, SNGTableData } from '../simpleng.common';
+import { SNGPaginationConfig, SNGTableConfig, SNGTablePage, SNGDefaultConfigs, SNGTableData, PageResponse } from '../simpleng.common';
 import { SNGTableColumnComponent } from './column/table-column.component';
 import { SNGTableHeaderOutletDirective } from './table-header-outlet.directive';
 
@@ -28,7 +29,7 @@ export const SNG_DEFAULT_TABLE_CONFIG = new InjectionToken<SNGTableConfig>('Defa
   styleUrls: ['./table.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class SNGTableComponent implements AfterViewInit {
+export class SNGTableComponent<T> implements OnInit, AfterViewInit {
 
   private readonly cssClass = {
     sort: 'sng-table-sort',
@@ -39,8 +40,8 @@ export class SNGTableComponent implements AfterViewInit {
 
   @HostBinding('class.sng-table') sngTableClass = true;
 
-  _config: SNGTableConfig;
-  @Input('config')
+  private _config: SNGTableConfig;
+  @Input()
   set config(val: SNGTableConfig) {
     this._config = {
       ...SNGDefaultConfigs.table,
@@ -51,9 +52,11 @@ export class SNGTableComponent implements AfterViewInit {
   get config() {
     return this._config;
   }
-  @Input() tableData: SNGTableData<any> = new SNGTableData();
+  @Input() tableData: SNGTableData<T> = new SNGTableData();
   @Input() hidePagination = false;
-  @Input() pagination: SNGPaginationConfig;
+  @Input() pagination: 'manual' | 'none';
+  @Input() paginationConfig: SNGPaginationConfig;
+  @Input() emptyMessage: string;
 
   @Output() pageChange: EventEmitter<SNGTablePage> = new EventEmitter();
 
@@ -93,15 +96,25 @@ export class SNGTableComponent implements AfterViewInit {
     this.config = injectedConfig;
   }
 
+  ngOnInit() {
+    if (this.paginationConfig) {
+      this.page.pageSize = this.paginationConfig.defaultPageSize;
+    }
+    if (!this.page.pageSize) {
+      this.page.pageSize = this.paginationComponent.config.defaultPageSize;
+    }
+  }
+
   ngAfterViewInit() {
     this.renderHeaders();
     this.columnsList.changes.subscribe((list: QueryList<SNGTableColumnComponent>) => {
       this.renderHeaders(list);
     });
-    this.emitChanges(); // Default emission.
   }
 
-  paginationChange() {
+  paginationChange(value: SNGTablePage) {
+    this.page.pageNumber = value.pageNumber;
+    this.page.pageSize = value.pageSize;
     this.emitChanges();
   }
 
@@ -140,8 +153,16 @@ export class SNGTableComponent implements AfterViewInit {
     this.emitChanges();
   }
 
+  updateByPageResponse(page: PageResponse<T>) {
+    this.tableData.updateByPageResponse(page);
+  }
+
+  update(data: T[], pageNumber?: number, pageSize?: number, totalElements?: number) {
+    this.tableData.update(data, pageNumber, pageSize, totalElements);
+  }
+
   private emitChanges() {
-    this.pageChange.emit({...this.page, ...this.paginationComponent.page});
+    this.pageChange.emit(this.page);
   }
 
   private renderHeaders(list: QueryList<SNGTableColumnComponent> = this.columnsList) {

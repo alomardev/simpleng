@@ -26,6 +26,9 @@ export interface SNGPaginationConfig {
 export interface SNGAlertConfig {
   dismissable?: boolean;
   animation?: boolean;
+  style?: {
+    stickyShadow?: boolean
+  };
 }
 
 export const SNGDefaultConfigs: SNGConfigs = {
@@ -49,6 +52,9 @@ export const SNGDefaultConfigs: SNGConfigs = {
   alert: {
     dismissable: true,
     animation: true,
+    style: {
+      stickyShadow: true
+    }
   }
 };
 
@@ -59,7 +65,7 @@ export interface SNGTablePage {
   sortDirection?: 'ASC' | 'DESC';
 }
 
-export interface PageResult<T> {
+export interface PageResponse<T> {
   number: number;
   size: number;
   content: T[];
@@ -73,7 +79,7 @@ export class SNGTableData<T> {
   pageSize: number;
   totalElements: number;
 
-  updateFromPage(page: PageResult<T>) {
+  updateByPageResponse(page: PageResponse<T>) {
     this.update(page.content, page.number, page.size, page.totalElements);
   }
 
